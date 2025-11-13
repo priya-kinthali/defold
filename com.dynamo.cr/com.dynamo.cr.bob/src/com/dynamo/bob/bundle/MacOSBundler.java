@@ -173,8 +173,12 @@ public class MacOSBundler implements IBundler {
         destExecutable.setExecutable(true);
         logger.info("Bundle binary: " + IOSBundler.getFileDescription(destExecutable));
 
-        File binaryDir = new File(FilenameUtils.concat(project.getBinaryOutputDirectory(), platform.getExtenderPair()));
-        BundleHelper.copySharedLibraries(platform, binaryDir, macosDir);
+        if (architectures.size() == 1) {
+            File binaryDir = new File(FilenameUtils.concat(project.getBinaryOutputDirectory(), platform.getExtenderPair()));
+            BundleHelper.copySharedLibraries(platform, binaryDir, macosDir);
+        } else {
+            IOSBundler.createFatLibrary(architectures, project.getBinaryOutputDirectory(), macosDir, canceled);
+        }
 
         // Copy debug symbols
         // Create list of dSYM binaries
