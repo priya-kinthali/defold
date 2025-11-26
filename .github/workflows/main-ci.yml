@@ -25,6 +25,7 @@ jobs:
       { name: 'Install CMake', uses: lukka/get-cmake@v4.1.1 },
       { name: 'Setup dotnet', uses: actions/setup-dotnet@v5, id: setup_dotnet, with: {dotnet-version: '9.x'}},
       { name: 'Create temporary global.json', run: 'echo "{\"sdk\":{\"version\": \"${{ steps.setup_dotnet.outputs.dotnet-version }}\"}}" > ./global.json' },
+      { name: 'Show global.json contents', run: 'cat ./global.json' },
       {
         name: 'Build engine',
         if: (github.event_name != 'repository_dispatch') || ((github.event_name == 'repository_dispatch') && (github.event.client_payload.skip_engine != true)),
